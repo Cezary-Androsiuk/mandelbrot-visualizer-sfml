@@ -45,11 +45,76 @@ Program::~Program()
     delete m_window;
 }
 
+void Program::makeAreaSquare(Area &area)
+{
+    double width = area.rightTop.x - area.leftBottom.x;
+    double height = area.rightTop.y - area.leftBottom.y;
+
+    if(width == height)
+        return;
+
+    if(width > height)
+    {
+        double diff = width - height;
+        double halfDiff = diff/2;
+
+        area.leftBottom.y -= halfDiff;
+        area.rightTop.y += halfDiff;
+    }
+    else
+    {
+        double diff = height - width;
+        double halfDiff = diff/2;
+
+        area.leftBottom.x -= halfDiff;
+        area.rightTop.x += halfDiff;
+    }
+}
+
+void Program::scaleAreaToScreen(Area &area, const Size &size)
+{
+    double screenHeight = static_cast<double>(size.height);
+    double screenWidth = static_cast<double>(size.width);
+
+    if(screenHeight == screenWidth)
+        return;
+
+    if(screenWidth > screenHeight)
+    {
+        // expand area width
+        double screenRatio = screenWidth / screenHeight;
+        double areaWidth = area.rightTop.x - area.leftBottom.x;
+        double areaWidthExpansion = areaWidth * screenRatio;
+        double siteExpansion = (areaWidthExpansion - areaWidth)/2;
+
+        area.leftBottom.x -= siteExpansion;
+        area.rightTop.x += siteExpansion;
+    }
+    else
+    {
+        // expand area height
+        double screenRatio = screenHeight / screenWidth;
+        double areaHeight = area.rightTop.y - area.leftBottom.y;
+        double areaHeightExpansion = areaHeight * screenRatio;
+        double siteExpansion = (areaHeightExpansion - areaHeight)/2;
+
+        area.leftBottom.y -= siteExpansion;
+        area.rightTop.y += siteExpansion;
+    }
+}
+
 void Program::displaySFML(StartupData *startupData)
 {
     Program program; // shows window
-    program.m_confData.pointLB = startupData->pointLB;
-    program.m_confData.pointRT = startupData->pointRT;
+
+    /// conpute proportions
+    Program::makeAreaSquare(startupData->area);
+    Program::scaleAreaToScreen(startupData->area, program.m_confData.size);
+    printf("%Lg %Lg\n", startupData->area.leftBottom.x, startupData->area.leftBottom.y);
+    printf("%Lg %Lg\n", startupData->area.rightTop.x, startupData->area.rightTop.y);
+
+    program.m_confData.pointLB = startupData->area.leftBottom;
+    program.m_confData.pointRT = startupData->area.rightTop;
     program.m_confData.iterations = startupData->iterations;
     program.m_confData.resolution = startupData->resolution;
 

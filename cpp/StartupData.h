@@ -7,7 +7,7 @@
 #include <limits>
 
 #include "Point.h"
-#include "Size.h"
+#include "Area.h"
 
 #define STARTUP_DATA_FILE "./resources/startupData.txt"
 
@@ -35,8 +35,7 @@ class StartupData
 public:
     static StartupData *getInstance();
 
-    Point pointLB;
-    Point pointRT;
+    Area area;
     int iterations;
     double resolution;
 };

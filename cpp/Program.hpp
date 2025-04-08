@@ -35,6 +35,9 @@ class Program{
     Program();
     ~Program();
 
+    static void makeAreaSquare(Area &area);
+    static void scaleAreaToScreen(Area &area, const Size &size);
+
 public:
     static void displaySFML(StartupData *startupData);
 

@@ -9,11 +9,11 @@ void StartupData::ignoreLine(std::ifstream& file, bool gl) {
 
 void StartupData::setDefaultStartupData()
 {
-    this->pointLB.x = DEFAULT_POINT_LB_x;
-    this->pointLB.y = DEFAULT_POINT_LB_Y;
+    this->area.leftBottom.x = DEFAULT_POINT_LB_x;
+    this->area.leftBottom.y = DEFAULT_POINT_LB_Y;
 
-    this->pointRT.x = DEFAULT_POINT_RT_X;
-    this->pointRT.y = DEFAULT_POINT_RT_Y;
+    this->area.rightTop.x = DEFAULT_POINT_RT_X;
+    this->area.rightTop.y = DEFAULT_POINT_RT_Y;
 
     this->iterations = DEFAULT_ITERATIONS;
     this->resolution = DEFAULT_RESOLUTION;
@@ -21,24 +21,26 @@ void StartupData::setDefaultStartupData()
 
 void StartupData::verifyLoadedData()
 {
-    if(pointLB.x >= pointRT.x)
+    if(area.leftBottom.x >= area.rightTop.x)
     {
         printf("Left Point should be the left one - using default values\n");
 
-        this->pointLB.x = DEFAULT_POINT_LB_x;
-        this->pointLB.y = DEFAULT_POINT_LB_Y;
-        this->pointRT.x = DEFAULT_POINT_RT_X;
-        this->pointRT.y = DEFAULT_POINT_RT_Y;
+        this->area.leftBottom.x = DEFAULT_POINT_LB_x;
+        this->area.leftBottom.y = DEFAULT_POINT_LB_Y;
+
+        this->area.rightTop.x = DEFAULT_POINT_RT_X;
+        this->area.rightTop.y = DEFAULT_POINT_RT_Y;
     }
 
-    if(pointLB.y >= pointRT.y)
+    if(area.leftBottom.y >= area.rightTop.y)
     {
         printf("Bottom Point should be the bottom one - using default values\n");
 
-        this->pointLB.x = DEFAULT_POINT_LB_x;
-        this->pointLB.y = DEFAULT_POINT_LB_Y;
-        this->pointRT.x = DEFAULT_POINT_RT_X;
-        this->pointRT.y = DEFAULT_POINT_RT_Y;
+        this->area.leftBottom.x = DEFAULT_POINT_LB_x;
+        this->area.leftBottom.y = DEFAULT_POINT_LB_Y;
+
+        this->area.rightTop.x = DEFAULT_POINT_RT_X;
+        this->area.rightTop.y = DEFAULT_POINT_RT_Y;
     }
 
     if(resolution <= 0.0)
@@ -68,10 +70,10 @@ void StartupData::loadData()
     }
 
     ignoreLine(file, false);
-    file >> this->pointLB.x >> this->pointLB.y;
+    file >> this->area.leftBottom.x >> this->area.leftBottom.y;
 
     ignoreLine(file);
-    file >> this->pointRT.x >> this->pointRT.y;
+    file >> this->area.rightTop.x >> this->area.rightTop.y;
 
     ignoreLine(file);
     file >> this->iterations;
@@ -84,8 +86,8 @@ void StartupData::loadData()
     this->verifyLoadedData();
 
     printf("Startup data loaded correctly\n");
-    printf("\t" "pointLB = {%g, %g}\n", this->pointLB.x, this->pointLB.y);
-    printf("\t" "pointRT = {%g, %g}\n", this->pointRT.x, this->pointRT.y);
+    printf("\t" "area.leftBottom = {%Lg, %Lg}\n", this->area.leftBottom.x, this->area.leftBottom.y);
+    printf("\t" "area.rightTop = {%Lg, %Lg}\n", this->area.rightTop.x, this->area.rightTop.y);
     printf("\t" "iterations = %d\n", this->iterations);
     printf("\t" "resolution = %g\n", this->resolution);
 

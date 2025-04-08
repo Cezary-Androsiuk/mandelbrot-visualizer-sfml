@@ -5,4 +5,4 @@ pointRT.x   pointRT.y       (double, double)
 iterations                  (unsigned int)
 256
 resolution                  (double in range [0, 1])
-0.05
+1
