@@ -21,9 +21,9 @@ void StartupData::setDefaultStartupData()
 
 void StartupData::verifyLoadedData()
 {
-    if(pointLB.x < pointRT.x)
+    if(pointLB.x >= pointRT.x)
     {
-        printf("Left Point should be the left one - using default values");
+        printf("Left Point should be the left one - using default values\n");
 
         this->pointLB.x = DEFAULT_POINT_LB_x;
         this->pointLB.y = DEFAULT_POINT_LB_Y;
@@ -31,9 +31,9 @@ void StartupData::verifyLoadedData()
         this->pointRT.y = DEFAULT_POINT_RT_Y;
     }
 
-    if(pointLB.y < pointRT.y)
+    if(pointLB.y >= pointRT.y)
     {
-        printf("Bottom Point should be the bottom one - using default values");
+        printf("Bottom Point should be the bottom one - using default values\n");
 
         this->pointLB.x = DEFAULT_POINT_LB_x;
         this->pointLB.y = DEFAULT_POINT_LB_Y;
