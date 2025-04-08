@@ -146,6 +146,8 @@ void Program::computeData()
         m_dataMatrix
     );
 
+    // find middle point and print it
+
     printf("computation finished\n");
 
     const long double scale = 256.0 / m_confData.iterations;
