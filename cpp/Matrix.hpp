@@ -9,22 +9,13 @@
 #include <fstream>
 #include <iomanip> // set width of int while saving
 
+#include "Point.h"
+#include "Size.h"
+
 typedef std::vector<uint8_t> vuint8;
 typedef std::vector<vuint8*> vvuint8;
 
 #define POW(x) ((x) * (x))
-
-struct Point{
-    long double x;
-    long double y;
-};
-typedef const Point *cPoint;
-
-struct Size{
-    int width;
-    int height;
-};
-typedef const Size *cSize;
 
 class Matrix{
 public:

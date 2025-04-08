@@ -1,0 +1,8 @@
+pointLB.x   pointLB.y       (double, double)
+-2          -1.25
+pointRT.x   pointRT.y       (double, double)
+0.5         1.25
+iterations                  (unsigned int)
+256
+resolution                  (double in range [0, 1])
+0.05

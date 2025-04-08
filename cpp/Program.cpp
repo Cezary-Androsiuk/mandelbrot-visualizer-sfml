@@ -45,17 +45,17 @@ Program::~Program()
     delete m_window;
 }
 
-void Program::displaySFML(cPoint pointLB, cPoint pointRT, int iterations, long double resolution)
+void Program::displaySFML(StartupData *startupData)
 {
     Program program; // shows window
-    program.m_confData.pointLB = *pointLB;
-    program.m_confData.pointRT = *pointRT;
-    program.m_confData.iterations = iterations;
-    program.m_confData.resolution = resolution;
+    program.m_confData.pointLB = startupData->pointLB;
+    program.m_confData.pointRT = startupData->pointRT;
+    program.m_confData.iterations = startupData->iterations;
+    program.m_confData.resolution = startupData->resolution;
 
     program.m_confData.scalledSize = {
-        (int) (program.m_confData.size.width * resolution),
-        (int) (program.m_confData.size.height * resolution)
+        (int) (program.m_confData.size.width * startupData->resolution),
+        (int) (program.m_confData.size.height * startupData->resolution)
     };
 
     Matrix *mandelbrotMatrix = new Matrix(&program.m_confData.scalledSize);

@@ -7,6 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "StartupData.h"
+
 #include "Matrix.hpp"
 #include "Mandelbrot.hpp"
 #include "ColorPalette.hpp"
@@ -34,7 +36,7 @@ class Program{
     ~Program();
 
 public:
-    static void displaySFML(cPoint pointLB, cPoint pointRT, int iterations, long double resolution);
+    static void displaySFML(StartupData *startupData);
 
 private:
     void computeData();
