@@ -2,14 +2,16 @@
 
 #include <chrono>
 
-const char *version = "1.0.2";
+#include "Support.h"
+
+const char *version = "1.0.3";
 
 void Program::init()
 {
     sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
     #if DEBUG_VIEW
-    desktopMode.width /= 1.2;
-    desktopMode.height /= 1.2;
+    desktopMode.width /= 1.4;
+    desktopMode.height /= 1.4;
     #endif
     m_confData.size = {static_cast<int>(desktopMode.width), static_cast<int>(desktopMode.height)};
 
@@ -161,7 +163,7 @@ void Program::computeData()
 
     // find middle point and print it
 
-    printf("computation finished\n");
+    // printf("computation finished\n");
     auto start2 = std::chrono::high_resolution_clock::now();
 
     /// ~10ms
@@ -202,8 +204,8 @@ void Program::computeData()
     auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1);
     auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
 
-    printf("%lld\n", duration1.count());
-    printf("%lld\n", duration2.count());
+    // printf("%lld\n", duration1.count());
+    // printf("%lld\n", duration2.count());
 
     m_backgroundImageTexture.loadFromImage(image); //! mutex required !!!!
     // race condition... (this and drawing sprite)
@@ -370,6 +372,17 @@ void Program::checkMoves()
         this->moveViewRight();
     if(m_currentEvent.key.code == sf::Keyboard::Down)
         this->moveViewDown();
+
+    if(m_dataNeedComputation)
+        this->printNewViewBounds();
+}
+
+void Program::printNewViewBounds()
+{
+    printf("New view Bounds: LB={%Lf, %Lf}, Rt{%Lf, %Lf}\n",
+           m_confData.pointLB.x, m_confData.pointLB.y,
+           m_confData.pointRT.x, m_confData.pointRT.y);
+    fflush(stdout);
 }
 
 void Program::pollEvent()

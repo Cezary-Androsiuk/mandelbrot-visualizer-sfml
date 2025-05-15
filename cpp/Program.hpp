@@ -14,10 +14,6 @@
 #include "Mandelbrot.hpp"
 #include "ColorPalette.hpp"
 
-#define DEBUG_VIEW false // makes window smaller
-#define DEBUG_MODE false // add some comments
-#define MORE_DEBUG false // add even more comments
-
 #define FPS 30
 
 #define BACKGROUND_SF_COLOR sf::Color(30, 30, 30)
@@ -61,6 +57,7 @@ private:
     void moveViewRight();
     void moveViewDown();
     void checkMoves();
+    void printNewViewBounds();
 
     void pollEvent();
     void update();

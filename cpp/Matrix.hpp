@@ -14,8 +14,6 @@
 
 // #include "SFML/Graphics.hpp"
 
-typedef std::vector<uint8_t> vuint8;
-
 #define POW(x) ((x) * (x))
 
 class Matrix{
@@ -29,7 +27,7 @@ public:
     const Size &getSize() const;
 
 private:
-    vuint8 m_matrix;
+    int *m_matrix;
     Size m_size;
 };
 
