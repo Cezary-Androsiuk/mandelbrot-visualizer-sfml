@@ -5,11 +5,23 @@ project(MandelbrotVisualizer LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Point where look for Boost stuff
+# set(BOOST_ROOT "C:/boost_1_88_0")
+
 # Point where look for SFML stuff
 set(SFML_DIR "C:/SFML-2.6.1/lib/cmake/SFML")
 
+# Look for Boost stuff
+# find_package(Boost 1.88.0 REQUIRED)
+
 # Look for SFML stuff
 find_package(SFML 2.6 COMPONENTS graphics window system REQUIRED)
+
+# set Boost include directory # not required if Boost is added to env variables
+# include_directories(${Boost_INCLUDE_DIRS})
+
+# set SFML include directory # not required if Boost is added to env variables
+
 
 include_directories(${CMAKE_SOURCE_DIR}/cpp)
 
@@ -34,6 +46,7 @@ add_executable(
     cpp/Size.h cpp/Size.cpp
     cpp/Area.h cpp/Area.cpp
     cpp/Support.h cpp/Support.cpp
+    cpp/Real.h cpp/Real.cpp
 )
 
 file(GLOB RESOURCE_FILES_LIST "${CMAKE_SOURCE_DIR}/resources/*")
@@ -48,15 +61,6 @@ add_custom_target(resources_copy ALL
 
 add_dependencies(${PROJECT_NAME} resources_copy)
 
-# # copy resources
-# add_custom_command(
-#     TARGET ${PROJECT_NAME} POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_directory
-#         ${CMAKE_SOURCE_DIR}/resources
-#         ${CMAKE_BINARY_DIR}/resources
-#     DEPENDS ${RESOURCE_FILES}
-#     COMMENT "Copying resources to build directory"
-# )
 
 include(GNUInstallDirs)
 install(TARGETS ${PROJECT_NAME}

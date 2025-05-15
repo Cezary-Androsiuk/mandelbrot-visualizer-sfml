@@ -1,13 +1,16 @@
 #include "Mandelbrot.hpp"
 
+#include "Real.h"
+
 void computeMandelbrot(cPoint pointLB, cPoint pointRT, cSize size, int iterations, Matrix *mandelbrotMatrix) noexcept
 {
-    long double dX = (pointRT->x - pointLB->x) / (size->width-1);
-    long double dY = (pointRT->y - pointLB->y) / (size->height-1);
+    real dX = (pointRT->x - pointLB->x) / (size->width-1);
+    real dY = (pointRT->y - pointLB->y) / (size->height-1);
     
-    long double x0, y0, x, y, xtmp;
+    real x0, y0, x, y, xtmp;
     int iteration;
 
+    const real real_4 = 4.0;
     for(int yi=0; yi<size->height; yi++)
     {
         y0 = pointLB->y + yi * dY;
@@ -18,7 +21,7 @@ void computeMandelbrot(cPoint pointLB, cPoint pointRT, cSize size, int iteration
             y = y0;
             iteration = 0;
             
-            while(x*x + y*y <= 4.0 && iteration < iterations)
+            while(x*x + y*y <= real_4 && iteration < iterations)
             {
                 xtmp = POW(x) - POW(y) + x0;
                 y = 2*x*y + y0;
@@ -28,5 +31,7 @@ void computeMandelbrot(cPoint pointLB, cPoint pointRT, cSize size, int iteration
 
             mandelbrotMatrix->setCell(xi, yi, iteration);
         }
+        // printf("yi: %d\n", yi);
+        // fflush(stdout);
     }
 }

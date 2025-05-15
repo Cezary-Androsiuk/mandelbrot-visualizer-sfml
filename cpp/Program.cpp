@@ -4,7 +4,7 @@
 
 #include "Support.h"
 
-const char *version = "1.0.3";
+const char *version = "1.0.4";
 
 void Program::init()
 {
@@ -379,7 +379,7 @@ void Program::checkMoves()
 
 void Program::printNewViewBounds()
 {
-    printf("New view Bounds: LB={%Lf, %Lf}, Rt{%Lf, %Lf}\n",
+    printf("New view Bounds: LB={%.20Lf, %.20Lf}, Rt{%.20Lf, %.20Lf}\n",
            m_confData.pointLB.x, m_confData.pointLB.y,
            m_confData.pointRT.x, m_confData.pointRT.y);
     fflush(stdout);

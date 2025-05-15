@@ -2,7 +2,7 @@
 #define SUPPORT_H
 
 
-#define DEBUG_VIEW true /// makes window smaller
+#define DEBUG_VIEW false /// makes window smaller
 #define DEBUG_MODE false /// add some comments
 #define MORE_DEBUG false /// add even more comments
 

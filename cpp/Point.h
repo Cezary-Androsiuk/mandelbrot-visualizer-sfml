@@ -1,10 +1,12 @@
 #ifndef POINT_H
 #define POINT_H
 
+#include "Real.h"
+
 struct Point
 {
-    long double x;
-    long double y;
+    real x;
+    real y;
 };
 typedef const Point *cPoint;
 
