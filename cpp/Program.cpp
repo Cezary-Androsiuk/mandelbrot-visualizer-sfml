@@ -1,5 +1,8 @@
 #include "Program.hpp"
 
+#include <chrono>
+
+const char *version = "1.0.1";
 
 void Program::init()
 {
@@ -19,14 +22,17 @@ void Program::init()
     m_window->setPosition(sf::Vector2i(0,0));
     m_window->setFramerateLimit(FPS);
     printf("window: %ux%u\n",m_window->getSize().x, m_window->getSize().y);
+}
 
+void Program::initLoadingShape()
+{
     long double loadingShapeSize = m_videoMode.width*0.1;
     m_loadingShape.setSize(sf::Vector2f(loadingShapeSize, loadingShapeSize));
     m_loadingShape.setOrigin(sf::Vector2f(loadingShapeSize/2, loadingShapeSize/2));
     m_loadingShape.setPosition(sf::Vector2f(
-        m_videoMode.width/2, 
+        m_videoMode.width/2,
         m_videoMode.height/2
-    ));
+        ));
     m_loadingShape.setOutlineThickness(6.f);
     m_loadingShape.setOutlineColor(sf::Color(100,30,30));
     m_loadingShape.setFillColor(sf::Color::Transparent);
@@ -38,6 +44,7 @@ Program::Program()
     , m_dataNeedComputation(true)
 {
     this->init();
+    this->initLoadingShape();
 }
 
 Program::~Program()
@@ -103,13 +110,17 @@ void Program::scaleAreaToScreen(Area &area, const Size &size)
     }
 }
 
-void Program::displaySFML(StartupData *startupData)
+void Program::displaySFML()
 {
+    StartupData *startupData = StartupData::getInstance();
+
     Program program; // shows window
 
     /// conpute proportions
     Program::makeAreaSquare(startupData->area);
     Program::scaleAreaToScreen(startupData->area, program.m_confData.size);
+
+    printf("\n""transformed size\n");
     printf("%Lg %Lg\n", startupData->area.leftBottom.x, startupData->area.leftBottom.y);
     printf("%Lg %Lg\n", startupData->area.rightTop.x, startupData->area.rightTop.y);
 
@@ -138,6 +149,7 @@ void Program::displaySFML(StartupData *startupData)
 
 void Program::computeData()
 {
+    // auto start1 = std::chrono::high_resolution_clock::now();
     computeMandelbrot(
         & m_confData.pointLB,
         & m_confData.pointRT,
@@ -145,42 +157,53 @@ void Program::computeData()
         m_confData.iterations,
         m_dataMatrix
     );
+    // auto end1 = std::chrono::high_resolution_clock::now();
 
     // find middle point and print it
 
     printf("computation finished\n");
+    // auto start2 = std::chrono::high_resolution_clock::now();
 
+    /// ~10ms
     const long double scale = 256.0 / m_confData.iterations;
-
     int width = m_confData.scalledSize.width;
     int height = m_confData.scalledSize.height;
     sf::Image image;
     image.create(width, height);
 
+    /// ~110ms
     for(int y=0; y<height; ++y)
     {
         for(int x=0; x<width; ++x)
         {
-            int cell = m_dataMatrix->getCell(x, y);
-            int colorIndex = (int) floor(5.0*scale*log2f(1.0f*cell+1));
+            int cell = m_dataMatrix->getCell(x, y); /// ~25ms
+            int colorIndex = (int) floor(5.0*scale*log2f(1.0f*cell+1)); /// ~88ms !!!!
 
+            /// ~ 6ms
             sf::Color pixelColor;
             pixelColor.r = ColorPalette[colorIndex][0];
             pixelColor.g = ColorPalette[colorIndex][2];
             pixelColor.b = ColorPalette[colorIndex][1];
 
-            image.setPixel(x, y, pixelColor);
+            image.setPixel(x, y, pixelColor); /// ~24ms
 
             #if MORE_DEBUG
             if(x==y)
                 printf("(%d %d %d) ", pixelColor.r, pixelColor.g, pixelColor.b);
-            #endif 
+            #endif
         }
     }
-
+    // auto end2 = std::chrono::high_resolution_clock::now();
     #if DEBUG_MODE
     printf("created image\n");
     #endif
+
+
+    // auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1);
+    // auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
+
+    // printf("%lld\n", duration1.count());
+    // printf("%lld\n", duration2.count());
 
     m_backgroundImageTexture.loadFromImage(image); //! mutex required !!!!
     // race condition... (this and drawing sprite)
@@ -207,7 +230,7 @@ void Program::startComputation()
     #endif
 
     m_threadWorking = true;
-    m_dataWorkerThread = new std::thread(Program::computeData, this);
+    m_dataWorkerThread = new std::thread(&Program::computeData, this);
 }
 
 void Program::endComputation()
@@ -323,6 +346,10 @@ void Program::moveViewDown()
 
 void Program::checkMoves()
 {
+    if(m_currentEvent.key.code == sf::Keyboard::Escape)
+        m_window->close();
+
+    /// prevents queuing actions
     if(m_threadWorking)
         return;
     
@@ -353,10 +380,9 @@ void Program::pollEvent()
             m_window->close();
             break;
         case sf::Event::KeyPressed:
-            if(m_currentEvent.key.code == sf::Keyboard::Escape)
-                m_window->close();
-
             this->checkMoves();
+            break;
+        default:
             break;
         }
     }

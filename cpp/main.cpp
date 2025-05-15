@@ -2,9 +2,6 @@
 #include <cstdlib>
 #include <assert.h>
 
-#include <string>
-
-#include "StartupData.h"
 #include "Program.hpp"
 
 
@@ -20,5 +17,5 @@
 
 int main(int argc, char **argv)
 {
-    Program::displaySFML(StartupData::getInstance());
+    Program::displaySFML();
 }

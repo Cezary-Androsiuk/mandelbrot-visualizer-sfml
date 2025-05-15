@@ -4,6 +4,7 @@
 #include <atomic>
 #include <thread>
 #include <cmath>
+#include <mutex>
 
 #include <SFML/Graphics.hpp>
 
@@ -28,9 +29,12 @@
 
 #define LOADING_ROTATION_SPEED 10.f
 
+extern const char *version;
+
 class Program{
 
     void init();
+    void initLoadingShape();
 
     Program();
     ~Program();
@@ -39,7 +43,7 @@ class Program{
     static void scaleAreaToScreen(Area &area, const Size &size);
 
 public:
-    static void displaySFML(StartupData *startupData);
+    static void displaySFML();
 
 private:
     void computeData();
@@ -71,10 +75,10 @@ private:
         int iterations;
         long double resolution;
     } m_confData;
+
     Matrix *m_dataMatrix;
     std::thread *m_dataWorkerThread;
-    // std::atomic<bool> m_dataComputed;
-    bool m_threadWorking;
+    std::atomic<bool> m_threadWorking;
     std::atomic<bool> m_dataNeedComputation;
 
     

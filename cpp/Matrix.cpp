@@ -15,38 +15,43 @@ Matrix::~Matrix(){
 
 void Matrix::setCell(int x, int y, uint8_t value) noexcept
 {
-    if(y >= m_matrix.size())
-    {
-        fprintf(stderr, "cannot set value %f to row y=%d\n", y);
-        return;
-    }
+    // if(y >= m_matrix.size())
+    // {
+    //     fprintf(stderr, "cannot set value %f to row y=%d\n", y);
+    //     return;
+    // }
 
-    vuint8 &row = *m_matrix[y];
-    if(x >= row.size())
-    {
-        fprintf(stderr, "cannot set value %f to point (x=%d, y=%d)\n", x, y);
-        return;
-    }
+    // vuint8 &row = *m_matrix[y];
+    // if(x >= row.size())
+    // {
+    //     fprintf(stderr, "cannot set value %f to point (x=%d, y=%d)\n", x, y);
+    //     return;
+    // }
 
-    row[x] = value;
+    // row[x] = value;
+
+    (*m_matrix[y])[x] = value;
 }
 
 uint8_t Matrix::getCell(int x, int y) const noexcept
 {
-    if(y >= m_matrix.size())
-    {
-        fprintf(stderr, "cannot set value %f to row y=%d\n", y);
-        return 0;
-    }
+    // if(y >= m_matrix.size())
+    // {
+    //     fprintf(stderr, "cannot set value %f to row y=%d\n", y);
+    //     return 0;
+    // }
 
-    vuint8 &row = *m_matrix[y];
-    if(x >= row.size())
-    {
-        fprintf(stderr, "cannot set value %f to point (x=%d, y=%d)\n", x, y);
-        return 0;
-    }
+    // vuint8 &row = *m_matrix[y];
+    // if(x >= row.size())
+    // {
+    //     fprintf(stderr, "cannot set value %f to point (x=%d, y=%d)\n", x, y);
+    //     return 0;
+    // }
 
-    return row[x];
+    // return row[x]; /// ~37ms in usage
+    // return m_matrix.at(y)->at(x); /// ~47ms in usage
+    return (*m_matrix[y])[x]; /// ~25ms in usage
+    // return 0; /// ~1ms in usage
 }
 
 void Matrix::saveToFile(std::string fileName)
