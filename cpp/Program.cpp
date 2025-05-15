@@ -149,7 +149,7 @@ void Program::displaySFML()
 
 void Program::computeData()
 {
-    // auto start1 = std::chrono::high_resolution_clock::now();
+    auto start1 = std::chrono::high_resolution_clock::now();
     computeMandelbrot(
         & m_confData.pointLB,
         & m_confData.pointRT,
@@ -157,12 +157,12 @@ void Program::computeData()
         m_confData.iterations,
         m_dataMatrix
     );
-    // auto end1 = std::chrono::high_resolution_clock::now();
+    auto end1 = std::chrono::high_resolution_clock::now();
 
     // find middle point and print it
 
     printf("computation finished\n");
-    // auto start2 = std::chrono::high_resolution_clock::now();
+    auto start2 = std::chrono::high_resolution_clock::now();
 
     /// ~10ms
     const long double scale = 256.0 / m_confData.iterations;
@@ -193,17 +193,17 @@ void Program::computeData()
             #endif
         }
     }
-    // auto end2 = std::chrono::high_resolution_clock::now();
+    auto end2 = std::chrono::high_resolution_clock::now();
     #if DEBUG_MODE
     printf("created image\n");
     #endif
 
 
-    // auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1);
-    // auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
+    auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1);
+    auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
 
-    // printf("%lld\n", duration1.count());
-    // printf("%lld\n", duration2.count());
+    printf("%lld\n", duration1.count());
+    printf("%lld\n", duration2.count());
 
     m_backgroundImageTexture.loadFromImage(image); //! mutex required !!!!
     // race condition... (this and drawing sprite)

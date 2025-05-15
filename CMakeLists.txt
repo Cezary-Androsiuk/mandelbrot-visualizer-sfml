@@ -33,6 +33,7 @@ add_executable(
     cpp/Point.h cpp/Point.cpp
     cpp/Size.h cpp/Size.cpp
     cpp/Area.h cpp/Area.cpp
+    cpp/Support.h cpp/Support.cpp
 )
 
 file(GLOB RESOURCE_FILES_LIST "${CMAKE_SOURCE_DIR}/resources/*")

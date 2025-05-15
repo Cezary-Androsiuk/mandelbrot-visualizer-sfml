@@ -1,57 +1,42 @@
 #include "Matrix.hpp"
 
+#include "Support.h"
+
 Matrix::Matrix(const Size *size)
-    : m_matrix{ (size_t) size->height }
+    : m_matrix(size->field(), 0u)
     , m_size{size->width, size->height}
 {
-    for(int i=0; i<m_matrix.size(); i++)
-        m_matrix[i] = new vuint8(size->width, 0u);
+
 }
 
 Matrix::~Matrix(){
-    for(vuint8 *row : m_matrix)
-        delete row;
+
 }
 
 void Matrix::setCell(int x, int y, uint8_t value) noexcept
 {
-    // if(y >= m_matrix.size())
-    // {
-    //     fprintf(stderr, "cannot set value %f to row y=%d\n", y);
-    //     return;
-    // }
+    int index = x + y*m_size.width;
+    if(UNLIKELY(index >= m_matrix.size()))
+    {
+        fprintf(stderr, "cannot set value %u to x=%d and y=%d\n", value, x, y);
+        fprintf(stdout, "matrix size is x=%d and y=%d\n", m_size.width, m_size.height);
+        return;
+    }
 
-    // vuint8 &row = *m_matrix[y];
-    // if(x >= row.size())
-    // {
-    //     fprintf(stderr, "cannot set value %f to point (x=%d, y=%d)\n", x, y);
-    //     return;
-    // }
-
-    // row[x] = value;
-
-    (*m_matrix[y])[x] = value;
+    m_matrix[index] = value;
 }
 
 uint8_t Matrix::getCell(int x, int y) const noexcept
 {
-    // if(y >= m_matrix.size())
-    // {
-    //     fprintf(stderr, "cannot set value %f to row y=%d\n", y);
-    //     return 0;
-    // }
+    int index = x + y*m_size.width;
+    if(UNLIKELY(index >= m_matrix.size()))
+    {
+        fprintf(stderr, "cannot read value from x=%d and y=%d\n", x, y);
+        fprintf(stdout, "matrix size is x=%d and y=%d\n", m_size.width, m_size.height);
+        return 0;
+    }
 
-    // vuint8 &row = *m_matrix[y];
-    // if(x >= row.size())
-    // {
-    //     fprintf(stderr, "cannot set value %f to point (x=%d, y=%d)\n", x, y);
-    //     return 0;
-    // }
-
-    // return row[x]; /// ~37ms in usage
-    // return m_matrix.at(y)->at(x); /// ~47ms in usage
-    return (*m_matrix[y])[x]; /// ~25ms in usage
-    // return 0; /// ~1ms in usage
+    return m_matrix[index];
 }
 
 void Matrix::saveToFile(std::string fileName)
@@ -63,14 +48,15 @@ void Matrix::saveToFile(std::string fileName)
         return;
     }
 
-    size_t lastYIndex = m_matrix.size() -1;
-    for(int yi=0; yi<m_matrix.size(); yi++)
+    const size_t lastYIndex = m_size.height -1;
+    const size_t lastXIndex = m_size.width -1;
+    for(int yi=0; yi<m_size.height; yi++)
     {
-        vuint8 &row = *m_matrix[yi];
-        size_t lastXIndex = row.size() -1;
-        for(int xi=0; xi<row.size(); xi++)
+        // vuint8 &row = *m_matrix[yi];
+        for(int xi=0; xi<m_size.width; xi++)
         {
-            file << std::setw(3) << (int)row[xi] << (xi != lastXIndex ? " " : "");
+            int index = xi + yi * m_size.width;
+            file << std::setw(3) << (int)m_matrix[index] << (xi != lastXIndex ? " " : "");
         }
 
         if(yi != lastYIndex)

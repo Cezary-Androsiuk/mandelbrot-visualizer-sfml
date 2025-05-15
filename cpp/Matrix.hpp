@@ -12,8 +12,9 @@
 #include "Point.h"
 #include "Size.h"
 
+// #include "SFML/Graphics.hpp"
+
 typedef std::vector<uint8_t> vuint8;
-typedef std::vector<vuint8*> vvuint8;
 
 #define POW(x) ((x) * (x))
 
@@ -28,7 +29,7 @@ public:
     const Size &getSize() const;
 
 private:
-    vvuint8 m_matrix;
+    vuint8 m_matrix;
     Size m_size;
 };
 
