@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-const char *version = "1.0.1";
+const char *version = "1.0.2";
 
 void Program::init()
 {
