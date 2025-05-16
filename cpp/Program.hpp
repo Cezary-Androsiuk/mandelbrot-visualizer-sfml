@@ -21,9 +21,11 @@
 /// describes how by what percentage of the current size (width/height) 
 /// the space is to be moved
 #define ZOOM_SPEED 0.2
-#define MOVE_SPEED 0.2 
+#define MOVE_SPEED 0.2
 
 #define LOADING_ROTATION_SPEED 10.f
+
+#define COMPUTATIONS_THREADS 3
 
 extern const char *version;
 

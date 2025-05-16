@@ -152,13 +152,57 @@ void Program::displaySFML()
 void Program::computeData()
 {
     auto start1 = std::chrono::high_resolution_clock::now();
-    computeMandelbrot(
-        & m_confData.pointLB,
-        & m_confData.pointRT,
-        & m_confData.scalledSize,
-        m_confData.iterations,
-        m_dataMatrix
-    );
+    constexpr int threads = COMPUTATIONS_THREADS;
+    MBdata data[threads];
+    std::thread* workers[threads] = {0};
+
+    cPoint pLB = &m_confData.pointLB;
+    cPoint pRT = &m_confData.pointRT;
+
+    real dy = ((pRT->y - pLB->y)/threads);
+
+    printf("dy: %Lf, y: [%Lf, %Lf]\n", dy, pLB->y, pRT->y);
+    fflush(stdout);
+
+    const real heightPerThread = m_confData.scalledSize.height / threads;
+
+    for(int i=0; i<threads; i++)
+    {
+        real tmpBottom = pLB->y + dy * i;
+        real bottom = tmpBottom > pRT->y ? pRT->y : tmpBottom;
+        real top = pLB->y + dy * (i+1);
+
+
+        printf("y: [%Lg, %Lg]\n", bottom, top);
+        fflush(stdout);
+
+        computeMandelbrotPart(i, pLB->x, bottom, pRT->x, top,
+                          m_confData.scalledSize.width, heightPerThread,
+                          heightPerThread * i, m_confData.iterations, m_dataMatrix);
+
+        // workers[i] = new std::thread(
+        //     &computeMandelbrotPart, i, pLB->x, bottom, pRT->x, top,
+        //     m_confData.scalledSize.width, heightPerThread,
+        //     m_confData.iterations, m_dataMatrix);
+    }
+
+    // for(int i; i<threads; i++)
+    // {
+    //     workers[i]->join();
+    //     delete workers[i];
+    // }
+
+    // computeMandelbrot(
+    //     m_confData.pointLB.x,
+    //     m_confData.pointLB.y,
+    //     m_confData.pointRT.x,
+    //     m_confData.pointRT.y,
+    //     m_confData.scalledSize.width,
+    //     m_confData.scalledSize.height,
+    //     m_confData.iterations,
+    //     m_dataMatrix
+    //     );
+
     auto end1 = std::chrono::high_resolution_clock::now();
 
     // find middle point and print it

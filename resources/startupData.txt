@@ -1,7 +1,7 @@
 pointLB.x   pointLB.y       (real, real)
--0.73465049913008055056   -0.15735063142323081000
+-2          -1.25
 pointRT.x   pointRT.y       (real, real)
--0.73465049913007607373   -0.15735063142322829230
+0.5         1.25
 iterations                  (unsigned int)
 256
 resolution                  (double in range [0, 1])
@@ -12,3 +12,8 @@ pointLB.x   pointLB.y       (real, real)
 -2          -1.25
 pointRT.x   pointRT.y       (real, real)
 0.5         1.25
+
+pointLB.x   pointLB.y       (real, real)
+-0.73465049913008055056   -0.15735063142323081000
+pointRT.x   pointRT.y       (real, real)
+-0.73465049913007607373   -0.15735063142322829230

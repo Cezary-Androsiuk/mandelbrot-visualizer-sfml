@@ -5,6 +5,20 @@
 #include "Size.h"
 #include "Matrix.hpp"
 
-void computeMandelbrot(cPoint pointLB, cPoint pointRT, cSize size, int iterations, Matrix *mandelbrotMatrix) noexcept;
+struct MBdata{
+    cPoint pointLB;
+    cPoint pointRT;
+    cSize size;
+    int iterations;
+    Matrix *mandelbrotMatrix;
+};
+
+void computeMandelbrot(
+    real l, real b, real r, real t, int width, int height,
+    int iterations, Matrix *mandelbrotMatrix) noexcept;
+
+void computeMandelbrotPart(int threadID,
+    real l, real b, real r, real t, int width, int height,
+    int heightOffset, int iterations, Matrix *mandelbrotMatrix) noexcept;
 
 #endif // MANDELBROT_HPP

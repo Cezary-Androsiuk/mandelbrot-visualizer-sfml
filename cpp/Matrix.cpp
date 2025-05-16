@@ -28,6 +28,7 @@ bool Matrix::cellExist(int index) const noexcept
         int y = index / m_size.width;
         fprintf(stderr, "cannot set value to x=%d and y=%d\n", x, y);
         fprintf(stdout, "matrix size is x=%d and y=%d\n", m_size.width, m_size.height);
+        exit(1);
         return false;
     }
 #endif
@@ -39,7 +40,6 @@ void Matrix::setCell(int x, int y, uint8_t value) noexcept
     int index = x + y*m_size.width;
     if(!this->cellExist(index))
         return;
-
     m_matrix[index] = value;
 }
 
