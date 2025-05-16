@@ -1,6 +1,9 @@
 #include "Mandelbrot.hpp"
 
+#include <cmath>
+
 #include "Real.h"
+#include "ColorPalette.hpp"
 
 void computeMandelbrot(cPoint pointLB, cPoint pointRT, cSize size, int iterations, Matrix *mandelbrotMatrix) noexcept
 {
@@ -9,6 +12,7 @@ void computeMandelbrot(cPoint pointLB, cPoint pointRT, cSize size, int iteration
     
     real x0, y0, x, y, xtmp;
     int iteration;
+    const long double scale = 256.0 / iterations;
 
     const real real_4 = 4.0;
     for(int yi=0; yi<size->height; yi++)
@@ -29,9 +33,17 @@ void computeMandelbrot(cPoint pointLB, cPoint pointRT, cSize size, int iteration
                 iteration++;
             }
 
-            mandelbrotMatrix->setCell(xi, yi, iteration);
+            // mandelbrotMatrix->setCell(xi, yi, iteration);
+
+            int colorIndex = (int) floor(5.0 * scale * log2f(1.0f * iteration + 1));
+
+            sf::Color pixelColor;
+            pixelColor.r = ColorPalette[colorIndex][0];
+            pixelColor.g = ColorPalette[colorIndex][2];
+            pixelColor.b = ColorPalette[colorIndex][1];
+
+            mandelbrotMatrix->setColorCell(xi, yi, pixelColor);
+
         }
-        // printf("yi: %d\n", yi);
-        // fflush(stdout);
     }
 }

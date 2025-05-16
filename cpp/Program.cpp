@@ -167,7 +167,6 @@ void Program::computeData()
     auto start2 = std::chrono::high_resolution_clock::now();
 
     /// ~10ms
-    const long double scale = 256.0 / m_confData.iterations;
     int width = m_confData.scalledSize.width;
     int height = m_confData.scalledSize.height;
     sf::Image image;
@@ -178,16 +177,8 @@ void Program::computeData()
     {
         for(int x=0; x<width; ++x)
         {
-            int cell = m_dataMatrix->getCell(x, y); /// ~25ms
-            int colorIndex = (int) floor(5.0*scale*log2f(1.0f*cell+1)); /// ~88ms !!!!
-
-            /// ~ 6ms
-            sf::Color pixelColor;
-            pixelColor.r = ColorPalette[colorIndex][0];
-            pixelColor.g = ColorPalette[colorIndex][2];
-            pixelColor.b = ColorPalette[colorIndex][1];
-
-            image.setPixel(x, y, pixelColor); /// ~24ms
+            const sf::Color &pixelColor = m_dataMatrix->getColorCell(x, y);
+            image.setPixel(x, y, pixelColor);
 
             #if MORE_DEBUG
             if(x==y)
@@ -204,8 +195,8 @@ void Program::computeData()
     auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1);
     auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
 
-    // printf("%lld\n", duration1.count());
-    // printf("%lld\n", duration2.count());
+    printf("%lld\n", duration1.count());
+    printf("%lld\n", duration2.count());
 
     m_backgroundImageTexture.loadFromImage(image); //! mutex required !!!!
     // race condition... (this and drawing sprite)
