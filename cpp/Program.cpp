@@ -176,32 +176,21 @@ void Program::computeData()
         // printf("y: [%Lg, %Lg]\n", bottom, top);
         // fflush(stdout);
 
-        computeMandelbrotPart(i, pLB->x, bottom, pRT->x, top,
-                          m_confData.scalledSize.width, heightPerThread,
-                          heightPerThread * i, m_confData.iterations, m_dataMatrix);
+        // computeMandelbrotPart(i, pLB->x, bottom, pRT->x, top,
+        //                   m_confData.scalledSize.width, heightPerThread,
+        //                   heightPerThread * i, m_confData.iterations, m_dataMatrix);
 
-        // workers[i] = new std::thread(
-        //     &computeMandelbrotPart, i, pLB->x, bottom, pRT->x, top,
-        //     m_confData.scalledSize.width, heightPerThread,
-        //     m_confData.iterations, m_dataMatrix);
+        workers[i] = new std::thread(
+            &computeMandelbrotPart, i, pLB->x, bottom, pRT->x, top,
+            m_confData.scalledSize.width, heightPerThread,
+            heightPerThread * i, m_confData.iterations, m_dataMatrix);
     }
 
-    // for(int i; i<threads; i++)
-    // {
-    //     workers[i]->join();
-    //     delete workers[i];
-    // }
-
-    // computeMandelbrot(
-    //     m_confData.pointLB.x,
-    //     m_confData.pointLB.y,
-    //     m_confData.pointRT.x,
-    //     m_confData.pointRT.y,
-    //     m_confData.scalledSize.width,
-    //     m_confData.scalledSize.height,
-    //     m_confData.iterations,
-    //     m_dataMatrix
-    //     );
+    for(int i; i<threads; i++)
+    {
+        workers[i]->join();
+        delete workers[i];
+    }
 
     auto end1 = std::chrono::high_resolution_clock::now();
 

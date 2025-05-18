@@ -25,7 +25,7 @@
 
 #define LOADING_ROTATION_SPEED 10.f
 
-#define COMPUTATIONS_THREADS 32
+#define COMPUTATIONS_THREADS 64
 
 extern const char *version;
 
