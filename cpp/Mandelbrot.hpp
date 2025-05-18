@@ -5,6 +5,8 @@
 #include "Size.h"
 #include "Matrix.hpp"
 
+#define SHOW_THREADS_SPLIT false
+
 struct MBdata{
     cPoint pointLB;
     cPoint pointRT;

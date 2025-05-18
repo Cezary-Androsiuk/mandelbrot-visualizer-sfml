@@ -84,9 +84,18 @@ void computeMandelbrotPart(int threadID,
             int colorIndex = (int) floor(5.0 * scale * log2f(1.0f * iteration + 1));
 
             sf::Color pixelColor;
+#if SHOW_THREADS_SPLIT
+            if(threadID % 3 == 0)
+                pixelColor.r = ColorPalette[colorIndex][0];
+            else if (threadID % 3 == 1)
+                pixelColor.g = ColorPalette[colorIndex][2];
+            else if (threadID % 3 == 2)
+                pixelColor.b = ColorPalette[colorIndex][1];
+#else
             pixelColor.r = ColorPalette[colorIndex][0];
             pixelColor.g = ColorPalette[colorIndex][2];
             pixelColor.b = ColorPalette[colorIndex][1];
+#endif
 
             mandelbrotMatrix->setColorCell(xi, yi+heightOffset, pixelColor);
 
