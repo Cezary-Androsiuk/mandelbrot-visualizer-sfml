@@ -161,8 +161,8 @@ void Program::computeData()
 
     real dy = ((pRT->y - pLB->y)/threads);
 
-    printf("dy: %Lf, y: [%Lf, %Lf]\n", dy, pLB->y, pRT->y);
-    fflush(stdout);
+    // printf("dy: %Lf, y: [%Lf, %Lf]\n", dy, pLB->y, pRT->y);
+    // fflush(stdout);
 
     const real heightPerThread = m_confData.scalledSize.height / threads;
 
@@ -173,8 +173,8 @@ void Program::computeData()
         real top = pLB->y + dy * (i+1);
 
 
-        printf("y: [%Lg, %Lg]\n", bottom, top);
-        fflush(stdout);
+        // printf("y: [%Lg, %Lg]\n", bottom, top);
+        // fflush(stdout);
 
         computeMandelbrotPart(i, pLB->x, bottom, pRT->x, top,
                           m_confData.scalledSize.width, heightPerThread,
