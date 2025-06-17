@@ -4,7 +4,7 @@
 
 #include "Support.h"
 
-const char *version = "1.0.4";
+const char *version = "1.1.1";
 
 void Program::init()
 {
@@ -152,6 +152,7 @@ void Program::displaySFML()
 
 void Program::computeData()
 {
+    auto start = std::chrono::high_resolution_clock::now();
     // auto start1 = std::chrono::high_resolution_clock::now();
     constexpr int threads = COMPUTATIONS_THREADS;
     MBdata data[threads];
@@ -240,6 +241,10 @@ void Program::computeData()
 
     m_backgroundImageTexture.loadFromImage(image); //! mutex required !!!!
     // race condition... (this and drawing sprite)
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    printf("computations took: %lldms\n", duration.count());
 
     m_threadWorking = false;
     m_dataNeedComputation = false;
