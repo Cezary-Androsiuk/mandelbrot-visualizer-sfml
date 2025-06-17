@@ -8,23 +8,23 @@ The implementation utilizes multithreading to accelerate computations and preven
 ## Usage
 ESC - exit application
 
-⬅️ - move left
-⬆️ - move up
-⬇️ - move down
+⬅️ - move left \
+⬆️ - move up \
+⬇️ - move down \
 ➡️ - move right
 
-+ or PageUp - zoom in
-- or PageDown - zoom out
+➕ or PageUp - zoom in \
+➖ or PageDown - zoom out
 
 ## Installation
 ### Windows 
-    The ready-to-use executable, including all necessary libraries, can be downloaded from the latest release in the "Releases" tab.
+The ready-to-use executable, including all necessary libraries, can be downloaded from the latest release in the "Releases" tab.
 
 ### Linux
-    Must be compiled individually - no pre-built binaries provided.
+Must be compiled individually - no pre-built binaries provided.
 
 ### MacOS
-    Must be compiled individually - no pre-built binaries provided.
+Must be compiled individually - no pre-built binaries provided.
 
 ## Images
 ![1](https://github.com/Cezary-Androsiuk/mandelbrot-visualizer-sfml/blob/master/images/1.png)
