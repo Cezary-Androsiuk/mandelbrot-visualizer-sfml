@@ -13,15 +13,16 @@ void Program::init()
     desktopMode.width /= 1.4;
     desktopMode.height /= 1.4;
     #endif
-    m_confData.size = {static_cast<int>(desktopMode.width), static_cast<int>(desktopMode.height)};
+    m_confData.size = {static_cast<int>(desktopMode.width)-75, static_cast<int>(desktopMode.height)-75};
 
-    m_videoMode = sf::VideoMode(desktopMode);
-    m_window = new sf::RenderWindow(m_videoMode, "Mandelbrot", 
-        DEBUG_VIEW ? sf::Style::Default : sf::Style::Fullscreen);
+    // m_videoMode = sf::VideoMode(desktopMode);
+    m_videoMode = sf::VideoMode(m_confData.size.width, m_confData.size.height);
+    m_window = new sf::RenderWindow(m_videoMode, "Mandelbrot",
+        DEBUG_VIEW ? sf::Style::Default : sf::Style::None);
     m_window->setPosition(sf::Vector2i(10, 10));
     
     // m_window->setPosition(sf::Vector2i((MAIN_WINDOW_WIDTH - m_windowWidth)/2,(MAIN_WINDOW_HEIGHT - m_windowHeight)/2));
-    m_window->setPosition(sf::Vector2i(0,0));
+    m_window->setPosition(sf::Vector2i(75/2,75/2));
     m_window->setFramerateLimit(FPS);
     printf("window: %ux%u\n",m_window->getSize().x, m_window->getSize().y);
 }
@@ -164,7 +165,10 @@ void Program::computeData()
     // printf("dy: %Lf, y: [%Lf, %Lf]\n", dy, pLB->y, pRT->y);
     // fflush(stdout);
 
+    // const real heightPerThread = static_cast<real>(m_confData.scalledSize.height) / static_cast<real>(threads);
     const real heightPerThread = m_confData.scalledSize.height / threads;
+
+    // printf("%lg\n%lg\n", heightPerThread*threads, m_confData.scalledSize.height);
 
     for(int i=0; i<threads; i++)
     {
@@ -186,9 +190,13 @@ void Program::computeData()
             heightPerThread * i, m_confData.iterations, m_dataMatrix);
     }
 
-    for(int i; i<threads; i++)
+    for(int i=0; i<threads; i++)
     {
         workers[i]->join();
+    }
+
+    for(int i=0; i<threads; i++)
+    {
         delete workers[i];
     }
 
